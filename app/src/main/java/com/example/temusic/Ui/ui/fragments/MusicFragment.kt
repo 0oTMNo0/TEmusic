@@ -1,5 +1,6 @@
 package com.example.temusic.Ui.ui.fragments
 
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,6 +20,8 @@ class MusicFragment : Fragment(){
 
     var listofsong = ArrayList<SongInfo>()
     var adapter:myadapter?=null
+
+    var mediaPlayer : MediaPlayer ?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_music,container,false)
@@ -44,6 +47,20 @@ class MusicFragment : Fragment(){
             myview.txtview_title.setText(song.Title)
             myview.txtviewdesc.setText(song.Desc)
             myview.buttonPlay.setOnClickListener{
+                if(myview.buttonPlay.text.equals("Stop"))
+                {
+                    mediaPlayer!!.stop()
+                    myview.buttonPlay.text="Play"
+
+                }
+                else
+                {
+                    mediaPlayer = MediaPlayer()
+                    mediaPlayer!!.setDataSource(song.SongUrl)
+                    mediaPlayer!!.prepare()
+                    mediaPlayer!!.start()
+                    myview.buttonPlay.text="Stop"
+                }
 
             }
             return myview
