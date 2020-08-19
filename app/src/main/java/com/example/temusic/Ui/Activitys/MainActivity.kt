@@ -1,5 +1,7 @@
 package com.example.temusic.Ui.Activitys
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
@@ -7,6 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
 import com.example.temusic.R
@@ -23,6 +27,14 @@ lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED)
+        {
+            val array = Array<String>(1){ Manifest.permission.READ_EXTERNAL_STORAGE}
+            ActivityCompat.requestPermissions(this,array,2000)
+        }
+
+
         showalbumFragment()
         bottomnavigation = findViewById(R.id.btn_nav)
         bottomnavigation!!.setOnNavigationItemSelectedListener {
