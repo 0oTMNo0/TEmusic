@@ -1,6 +1,7 @@
 package com.example.temusic.Ui.Activitys
 
 import android.Manifest
+import android.app.DownloadManager
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Gravity
@@ -28,18 +29,26 @@ lateinit var toggle: ActionBarDrawerToggle
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED)
-        {
-            val array = Array<String>(1){ Manifest.permission.READ_EXTERNAL_STORAGE}
-            ActivityCompat.requestPermissions(this,array,2000)
-        }
+
+        /*
+        if(!checkPermissionFromDevice())
+            requestPermissions()
+
+         */
 
 
         showalbumFragment()
         bottomnavigation = findViewById(R.id.btn_nav)
         bottomnavigation!!.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.nav_music -> showmusicFragment()
+                R.id.nav_music -> {
+                    showmusicFragment()
+                    if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                    {
+                        val array = Array<String>(1){ Manifest.permission.READ_EXTERNAL_STORAGE}
+                        ActivityCompat.requestPermissions(this,array,2000)
+                    }
+                }
                 R.id.nav_allbom -> showalbumFragment()
             }
             return@setOnNavigationItemSelectedListener true
@@ -82,4 +91,25 @@ lateinit var toggle: ActionBarDrawerToggle
         transactin.addToBackStack(null)
         transactin.commit()
     }
+    /*
+    private fun checkPermissionFromDevice():Boolean{
+        val writeExternalStorage=ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        return writeExternalStorage==PackageManager.PERMISSION_GRANTED
+    }
+    private fun requestPermissions(){
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),2)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode)
+        {
+            2 -> if (grantResults!!.size>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(applicationContext,"Permission grant...",Toast.LENGTH_LONG).show()
+            }
+        }
+    }*/
 }
