@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.temusic.R
 import com.example.temusic.Ui.SongInfo
 import kotlinx.android.synthetic.main.fragment_music.*
+import kotlinx.android.synthetic.main.shape_music.*
 import kotlinx.android.synthetic.main.shape_music.view.*
 
 
@@ -21,7 +22,7 @@ class MusicFragment : Fragment(){
     var listofsong = ArrayList<SongInfo>()
     var adapter:myadapter?=null
 
-    var mediaPlayer : MediaPlayer ?=null
+    var mediaPlayer : MediaPlayer = MediaPlayer()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_music,container,false)
@@ -55,11 +56,12 @@ class MusicFragment : Fragment(){
                 }
                 else
                 {
-                    mediaPlayer = MediaPlayer()
+                    mediaPlayer.reset()
                     mediaPlayer!!.setDataSource(song.SongUrl)
                     mediaPlayer!!.prepare()
                     mediaPlayer!!.start()
                     myview.buttonPlay.text="Stop"
+
                 }
 
             }
@@ -97,7 +99,6 @@ class MusicFragment : Fragment(){
                     val songurl = cursor!!.getString(cursor!!.getColumnIndex(MediaStore.Audio.Media.DATA))
                     val songAuthor = cursor!!.getString(cursor!!.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                     val songName = cursor!!.getString(cursor!!.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
-
                     listofsong.add(SongInfo(songName,songAuthor,songurl))
 
                 }while (cursor.moveToNext() == true)

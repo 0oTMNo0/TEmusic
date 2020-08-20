@@ -35,20 +35,18 @@ lateinit var toggle: ActionBarDrawerToggle
             requestPermissions()
 
          */
+        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+        {
+            val array = Array<String>(1){ Manifest.permission.READ_EXTERNAL_STORAGE}
+            ActivityCompat.requestPermissions(this,array,2000)
+        }
 
 
-        showalbumFragment()
+        showmusicFragment()
         bottomnavigation = findViewById(R.id.btn_nav)
         bottomnavigation!!.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.nav_music -> {
-                    showmusicFragment()
-                    if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                    {
-                        val array = Array<String>(1){ Manifest.permission.READ_EXTERNAL_STORAGE}
-                        ActivityCompat.requestPermissions(this,array,2000)
-                    }
-                }
+                R.id.nav_music -> showmusicFragment()
                 R.id.nav_allbom -> showalbumFragment()
             }
             return@setOnNavigationItemSelectedListener true
